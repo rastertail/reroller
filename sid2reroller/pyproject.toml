@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "sid2reroller"
+version = "0.1.0"
+description = "Converter from PSID songs to Reroller input streams"
+authors = ["Maxwell Beck <max@rastertail.net>"]
+license = "GPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pycapnp = "^1.3.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+pylint = "^2.17.4"
+
+[tool.poetry.scripts]
+sid2reroller = "sid2reroller.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

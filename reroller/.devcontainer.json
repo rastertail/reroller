@@ -1,0 +1,23 @@
+{
+    "name": "reroller",
+    "image": "docker.io/library/ubuntu:kinetic",
+    "initializeCommand": "nix run .#gen-dev-env -- .#reroller > nix.env",
+    "runArgs": [
+        "--env-file",
+        "nix.env"
+    ],
+    "mounts": [
+        "type=bind,source=/etc/ssl,target=/etc/ssl,readonly",
+        "type=bind,source=/nix/store,target=/nix/store,readonly"
+    ],
+    "workspaceMount": "type=bind,source=${localWorkspaceFolder}/..,target=/reroller,consistency=cached",
+    "workspaceFolder": "/reroller",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "mesonbuild.mesonbuild"
+            ]
+        }
+    }
+}
