@@ -11,7 +11,7 @@
       pkgs = import nixpkgs { inherit system overlays; };
     in {
       devShells.reroller = pkgs.mkShell {
-        packages = with pkgs; [ git gcc meson ninja capnproto ];
+        packages = with pkgs; [ git bashInteractive gcc meson ninja capnproto ];
       };
       devShells.sid2reroller = let
         env = pkgs.poetry2nix.mkPoetryEnv {
@@ -28,7 +28,7 @@
           });
         };
       in pkgs.mkShell {
-        packages = [ pkgs.git env ];
+        packages = with pkgs; [ bashInteractive git env ];
       };
 
       apps.gen-dev-env = {
