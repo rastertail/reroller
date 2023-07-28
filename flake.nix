@@ -40,7 +40,7 @@
           ignoreEnv=("BASHOPTS" "HOME" "NIX_BUILD_TOP" "NIX_ENFORCE_PURITY" "NIX_LOG_FD" "NIX_REMOTE" "PPID" "SHELL" "SHELLOPTS" "SSL_CERT_FILE" "TEMP" "TEMPDIR" "TERM" "TMP" "TMPDIR" "TZ" "UID")
           ignoreFilter=$(printf ",.key != \"%s\"" "''${ignoreEnv[@]}")
 
-          nix print-dev-env --json $1 | jq -r "[.variables | to_entries | .[] | select(.value.type == \"exported\" and ([''${ignoreFilter:1}] | all)) | \"\(.key)=\" + @tsv \"\([.value.value])\"] | join(\"\n\")"
+          nix print-dev-env --json $1 | ${pkgs.jq}/bin/jq -r "[.variables | to_entries | .[] | select(.value.type == \"exported\" and ([''${ignoreFilter:1}] | all)) | \"\(.key)=\" + @tsv \"\([.value.value])\"] | join(\"\n\")"
         ''}";
       };
     });
