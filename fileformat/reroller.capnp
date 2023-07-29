@@ -2,13 +2,10 @@
 
 struct Op {
     union {
-        loadStore :group {
-            dst @0 :UInt16;
-            val @1 :UInt8;
-        }
+        load @0: UInt32;
+        store @1: UInt32;
         call @2 :UInt32;
-        yieldValue @3 :UInt8;
-        yieldNone @4 :Void;
+        coyield @3 :Void;
     }
 }
 
@@ -20,7 +17,16 @@ struct Rule {
     ops @0 :List(Op);
 }
 
+struct Weights {
+    loadWeight @0 :UInt32;
+    storeWeight @1 :UInt32;
+    callWeight @2 :UInt32;
+    yieldWeight @3 :UInt32;
+    ruleWeight @4 :UInt32;
+}
+
 struct File {
     streams @0 :List(Stream);
     rules @1 :List(Rule);
+    weights @2 :Weights;
 }

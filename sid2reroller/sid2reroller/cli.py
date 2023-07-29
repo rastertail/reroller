@@ -1,30 +1,31 @@
-import capnp
+"""
+Command-line frontend
+"""
+
+import argparse
+
+from sid2reroller.convert import convert
+
 
 def main():
-    reroller_capnp = capnp.load("../fileformat/reroller.capnp")
+    """
+    Command-line entry point
+    """
 
-    file_data = reroller_capnp.File.new_message()
-    streams = file_data.init_resizable_list("streams")
-    stream = streams.add()
-    stream_ops = stream.init_resizable_list("ops")
+    parser = argparse.ArgumentParser(
+        description="Converter from PSID songs to Reroller input streams"
+    )
+    parser.add_argument("input", type=argparse.FileType("rb"), help="Input PSID file")
+    parser.add_argument(
+        "-o",
+        "--out",
+        type=argparse.FileType("wb"),
+        default="out.rr",
+        help="Output file",
+    )
+    parser.add_argument(
+        "-f", "--frames", type=int, default=10000, help="Number of frames to render"
+    )
+    args = parser.parse_args()
 
-    op = stream_ops.add()
-    op.loadStore.dst = 0xd400
-    op.loadStore.val = 0x00
-
-    op = stream_ops.add()
-    op.loadStore.dst = 0xd401
-    op.loadStore.val = 0x01
-
-    op = stream_ops.add()
-    op.loadStore.dst = 0xd402
-    op.loadStore.val = 0x02
-
-    op = stream_ops.add()
-    op.yieldValue = 0xff
-
-    stream_ops.finish()
-    streams.finish()
-
-    file = open("out.rr", "w+b")
-    file_data.write(file)
+    args.out.write(convert(args.input.read(), args.frames))

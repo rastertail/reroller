@@ -25,10 +25,15 @@
               ];
               buildInputs = (old.buildInputs or []) ++ [ pkgs.capnproto ];
             });
+            py65 = super.py65.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
+                self.setuptools
+              ];
+            });
           });
         };
       in pkgs.mkShell {
-        packages = with pkgs; [ bashInteractive git env ];
+        packages = with pkgs; [ bashInteractive git poetry env ];
       };
 
       apps.gen-dev-env = {
